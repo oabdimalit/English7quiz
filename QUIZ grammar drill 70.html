@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Квиз-тренажёр · 70 заданий · Порядок слов, глаголы, сравнения</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --teal:#0D6E63; --teal-d:#093F39; --teal-m:#11564F;
+  --acc:#B5762E; --gold:#E9AF5D;
+  --bg:#F1F7F6; --card:#FFFFFF; --soft:#FAFDFC;
+  --ink:#16241F; --mut:#51655F; --line:#D5E5E2;
+  --ok:#1E7A4A; --ok-bg:#E8F5ED; --bad:#B23B3B; --bad-bg:#FBECEC;
+  --shadow:0 1px 3px rgba(13,110,99,.08),0 6px 18px rgba(13,110,99,.06);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#0B1614; --card:#13211E; --soft:#182825;
+    --ink:#E8F0ED; --mut:#9DB3AD; --line:#273A36;
+    --teal:#4FC0B0; --teal-d:#07100F; --teal-m:#17302B;
+    --acc:#E0A05A; --ok:#5FD197; --ok-bg:#122C20; --bad:#F08A8A; --bad-bg:#2E1718;
+    --shadow:0 1px 3px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#0B1614; --card:#13211E; --soft:#182825;
+  --ink:#E8F0ED; --mut:#9DB3AD; --line:#273A36;
+  --teal:#4FC0B0; --teal-d:#07100F; --teal-m:#17302B;
+  --acc:#E0A05A; --ok:#5FD197; --ok-bg:#122C20; --bad:#F08A8A; --bad-bg:#2E1718;
+}
+*{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:30}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 70px}
+
+.hero{background:var(--teal-d);color:#fff;margin:0 -16px;padding:34px 20px 30px;position:relative;overflow:hidden}
+.hero .brand{font-size:11px;letter-spacing:.16em;font-weight:700;color:var(--gold);text-transform:uppercase}
+.hero h1{font-family:"Playfair Display",Georgia,serif;font-size:29px;line-height:1.15;margin:10px 0 6px}
+.hero p{margin:0;color:#A9CFC9;font-size:14.5px}
+.hero .blob{position:absolute;border-radius:50%;background:#0D6E63;opacity:.5}
+.b1{width:200px;height:200px;right:-60px;top:-80px}
+.b2{width:130px;height:130px;right:30px;bottom:-80px;background:#11564F}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;position:relative}
+.chip0{background:rgba(255,255,255,.1);border:1px solid rgba(233,175,93,.35);color:#EAF4F2;
+  border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:500}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--card);
+  border-bottom:1px solid var(--line);margin:0 -16px;padding:9px 16px;display:flex;align-items:center;gap:12px}
+.prog{flex:1;height:7px;background:var(--line);border-radius:999px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--gold));transition:width .25s}
+.cnt{font-size:13px;font-weight:600;color:var(--mut);white-space:nowrap}
+.tbtn{background:none;border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:5px 9px;font-size:15px;cursor:pointer;line-height:1}
+
+.sec{margin:30px 0 8px}
+.sec h2{font-family:"Playfair Display",Georgia,serif;font-size:22px;margin:0 0 4px;color:var(--teal)}
+.sec p{margin:0;color:var(--mut);font-size:13.5px}
+.sec .tag{display:inline-block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--acc);margin-bottom:6px}
+
+.q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 16px 13px;margin:12px 0;box-shadow:var(--shadow)}
+.q.err{border-color:var(--bad);background:var(--bad-bg)}
+.q.good{border-color:var(--ok)}
+.qh{display:flex;gap:10px;align-items:flex-start;margin-bottom:11px}
+.num{flex:none;width:27px;height:27px;border-radius:50%;background:var(--teal);color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.qt{font-size:16px;font-weight:500;flex:1}
+.qt b{color:var(--acc)}
+.hint{font-size:13px;color:var(--mut);margin:-4px 0 9px 37px}
+
+/* сборка предложения */
+.line{min-height:48px;border:1.5px dashed var(--line);border-radius:11px;background:var(--soft);
+  padding:8px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:9px}
+.line.filled{border-style:solid;border-color:var(--teal)}
+.line .ph{color:var(--mut);font-size:13.5px;padding:3px 5px}
+.bank{display:flex;flex-wrap:wrap;gap:7px}
+.w{border:1.5px solid var(--line);background:var(--card);border-radius:9px;padding:7px 12px;
+  font-size:15px;cursor:pointer;user-select:none;transition:.12s;font-weight:500}
+.w:hover{border-color:var(--teal);transform:translateY(-1px)}
+.w.inline{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+/* поиск ошибки */
+.sent{display:flex;flex-wrap:wrap;gap:6px;font-size:16px}
+.sw{padding:4px 7px;border-radius:7px;cursor:pointer;border:1.5px solid transparent}
+.sw:hover{background:var(--soft);border-color:var(--line)}
+.sw.pick{background:var(--acc);color:#fff;border-color:var(--acc)}
+
+/* поля ввода */
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.row .inf{font-weight:700;color:var(--teal);min-width:92px;font-size:16px}
+.row .ru{color:var(--mut);font-size:13.5px;min-width:110px}
+input[type=text]{padding:10px 13px;border:1.5px solid var(--line);border-radius:10px;background:var(--soft);
+  color:var(--ink);font:inherit;font-size:15px;flex:1;min-width:140px}
+input[type=text]:focus{outline:none;border-color:var(--teal)}
+
+.opts{display:grid;gap:7px}
+.opt{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;
+  background:var(--soft);cursor:pointer;font-size:15px;transition:.12s;user-select:none}
+.opt:hover{border-color:var(--teal)}
+.opt input{accent-color:var(--teal);width:17px;height:17px;flex:none;margin:0}
+.opt.sel{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 10%,transparent)}
+.opt.right{border-color:var(--ok);background:var(--ok-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+
+.fb{margin-top:10px;font-size:14px;padding:9px 12px;border-radius:9px;display:none}
+.fb.show{display:block}
+.fb.r{background:var(--ok-bg);color:var(--ok)}
+.fb.w{background:var(--bad-bg);color:var(--bad)}
+.fb b{font-weight:700}
+
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 10px}
+button.big{flex:1;min-width:190px;border:none;border-radius:12px;padding:15px 20px;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.primary{background:var(--teal);color:#fff}
+.primary:hover{filter:brightness(1.08)}
+.ghost{background:var(--card);color:var(--teal);border:1.5px solid var(--teal)!important}
+
+.res{display:none;background:var(--teal-d);color:#fff;border-radius:18px;padding:26px 22px;margin:22px 0}
+.res.show{display:block}
+.score{font-family:"Playfair Display",Georgia,serif;font-size:58px;line-height:1;color:var(--gold)}
+.score span{font-size:24px;color:#A9CFC9}
+.band{font-size:19px;font-weight:700;margin:10px 0 4px}
+.bandtxt{color:#A9CFC9;font-size:14.5px;margin:0}
+.bd{margin-top:20px;display:grid;gap:9px}
+.bdr{display:flex;align-items:center;gap:11px;background:#11564F;border-radius:10px;padding:10px 13px}
+.bdr .nm{flex:1;font-size:14px}
+.bdr .vl{font-weight:700;font-size:14.5px;color:var(--gold);white-space:nowrap}
+.bdr .mini{width:76px;height:6px;background:rgba(255,255,255,.18);border-radius:999px;overflow:hidden;flex:none}
+.bdr .mini i{display:block;height:100%;background:var(--gold)}
+.mistakes{margin-top:18px}
+.mistakes h3{font-size:15px;margin:0 0 9px;color:var(--gold)}
+.mi{background:#11564F;border-radius:10px;padding:11px 13px;margin-bottom:8px;font-size:14px}
+.mi .mq{color:#D8E8E5;margin-bottom:5px}
+.mi .ma{color:#F0A6A6}
+.mi .mc{color:#8FE0B8}
+.mi .ml{color:#8FB8B2;font-size:12px;margin-top:4px}
+footer{text-align:center;color:var(--mut);font-size:12.5px;padding:26px 0 10px}
+@media(max-width:560px){.hero h1{font-size:24px}.score{font-size:48px}.qt{font-size:15.5px}.w{font-size:14.5px;padding:7px 10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="brand">English Practice Hub</div>
+    <h1>Квиз-тренажёр · 70 заданий</h1>
+    <p>Порядок слов · неправильные глаголы · сравнения · пропуски · поиск ошибки</p>
+    <div class="meta">
+      <span class="chip0">Собери предложение</span>
+      <span class="chip0">Впиши форму</span>
+      <span class="chip0">Найди ошибку</span>
+      <span class="chip0">Мгновенная проверка</span>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="prog"><i id="pbar"></i></div>
+    <div class="cnt" id="pcnt">0 / 70</div>
+    <button class="tbtn" id="theme" title="Тема">◐</button>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="actions">
+    <button class="big primary" id="check">Проверить результат</button>
+    <button class="big ghost" id="reset">Начать заново</button>
+  </div>
+
+  <div class="res" id="res"></div>
+  <footer>English Practice Hub · O. Abdimalit · тренажёр грамматики</footer>
+</div>
+
+<script>
+/* ===================== ДАННЫЕ ===================== */
+const SECS = [
+ {n:"Порядок слов", t:"Раздел A · Собери предложение", d:"Нажимай на слова в правильном порядке. Нажми на слово в строке, чтобы убрать его."},
+ {n:"Неправильные глаголы", t:"Раздел B · Вторая и третья форма", d:"Впиши форму глагола. Регистр не важен."},
+ {n:"Сравнения", t:"Раздел C · Степени сравнения", d:"Напиши сравнительную или превосходную форму."},
+ {n:"Пропуски", t:"Раздел D · Вставь нужное слово", d:"Выбери слово, которое подходит в предложение."},
+ {n:"Поиск ошибки", t:"Раздел E · Найди ошибку", d:"В каждом предложении одно лишнее или неверное слово. Нажми на него."},
+ {n:"Предлоги", t:"Раздел F · Предлоги", d:"Короткий блок на самые частые предлоги."}
+];
+
+const DATA = [
+/* ---- A. ПОРЯДОК СЛОВ (15) ---- */
+{s:0,t:"ord",l:1, w:["Where","do","you","work","?"]},
+{s:0,t:"ord",l:1, w:["What","does","she","do","?"]},
+{s:0,t:"ord",l:1, w:["I","work","for","an","IT","company","."]},
+{s:0,t:"ord",l:1, w:["My","sister","doesn't","speak","English","."]},
+{s:0,t:"ord",l:2, w:["How","often","do","you","work","overtime","?"]},
+{s:0,t:"ord",l:2, w:["She","is","always","late","for","meetings","."]},
+{s:0,t:"ord",l:4, w:["There","are","two","cafés","in","this","terminal","."]},
+{s:0,t:"ord",l:15,w:["Could","you","repeat","that",",","please","?"]},
+{s:0,t:"ord",l:10,w:["I","will","call","you","tomorrow","."]},
+{s:0,t:"ord",l:10,w:["What","time","does","the","meeting","start","?"]},
+{s:0,t:"ord",l:18,w:["He","was","working","when","I","called","."]},
+{s:0,t:"ord",l:24,w:["Have","you","ever","worked","abroad","?"]},
+{s:0,t:"ord",l:9, w:["Could","you","tell","me","where","the","station","is","?"]},
+{s:0,t:"ord",l:24,w:["I","have","already","sent","the","email","."]},
+{s:0,t:"ord",l:19,w:["If","it","rains",",","we","will","stay","at","home","."]},
+
+/* ---- B. НЕПРАВИЛЬНЫЕ ГЛАГОЛЫ (15) ---- */
+{s:1,t:"vrb",l:5, inf:"go",    ru:"идти, ехать",   f:"Past Simple",     ac:["went"]},
+{s:1,t:"vrb",l:5, inf:"buy",   ru:"покупать",       f:"Past Simple",     ac:["bought"]},
+{s:1,t:"vrb",l:5, inf:"take",  ru:"брать",          f:"Past Simple",     ac:["took"]},
+{s:1,t:"vrb",l:5, inf:"fly",   ru:"летать",         f:"Past Simple",     ac:["flew"]},
+{s:1,t:"vrb",l:5, inf:"see",   ru:"видеть",         f:"Past Simple",     ac:["saw"]},
+{s:1,t:"vrb",l:5, inf:"meet",  ru:"встречать",      f:"Past Simple",     ac:["met"]},
+{s:1,t:"vrb",l:5, inf:"spend", ru:"тратить",        f:"Past Simple",     ac:["spent"]},
+{s:1,t:"vrb",l:5, inf:"leave", ru:"уезжать, оставлять",f:"Past Simple",  ac:["left"]},
+{s:1,t:"vrb",l:16,inf:"send",  ru:"отправлять",     f:"Past Simple",     ac:["sent"]},
+{s:1,t:"vrb",l:16,inf:"write", ru:"писать",         f:"Past Simple",     ac:["wrote"]},
+{s:1,t:"vrb",l:23,inf:"bring", ru:"приносить",      f:"Past Simple",     ac:["brought"]},
+{s:1,t:"vrb",l:23,inf:"find",  ru:"находить",       f:"Past Simple",     ac:["found"]},
+{s:1,t:"vrb",l:24,inf:"be",    ru:"быть",           f:"Past Participle (V3)", ac:["been"]},
+{s:1,t:"vrb",l:24,inf:"write", ru:"писать",         f:"Past Participle (V3)", ac:["written"]},
+{s:1,t:"vrb",l:24,inf:"speak", ru:"говорить",       f:"Past Participle (V3)", ac:["spoken"]},
+
+/* ---- C. СРАВНЕНИЯ (12) ---- */
+{s:2,t:"cmp",l:8, q:"cheap", f:"сравнительная", hint:"This hotel is ______ than that one.", ac:["cheaper"]},
+{s:2,t:"cmp",l:8, q:"big",   f:"сравнительная", hint:"Your room is ______ than mine.", ac:["bigger"]},
+{s:2,t:"cmp",l:8, q:"easy",  f:"сравнительная", hint:"This test is ______ than the last one.", ac:["easier"]},
+{s:2,t:"cmp",l:8, q:"busy",  f:"сравнительная", hint:"December is ______ than November.", ac:["busier"]},
+{s:2,t:"cmp",l:8, q:"expensive", f:"сравнительная", hint:"Taxis are ______ than buses.", ac:["more expensive"]},
+{s:2,t:"cmp",l:8, q:"comfortable", f:"сравнительная", hint:"This chair is ______ than that one.", ac:["more comfortable"]},
+{s:2,t:"cmp",l:8, q:"good",  f:"сравнительная", hint:"My English is ______ than last year.", ac:["better"]},
+{s:2,t:"cmp",l:8, q:"bad",   f:"сравнительная", hint:"The weather today is ______ than yesterday.", ac:["worse"]},
+{s:2,t:"cmp",l:8, q:"cheap", f:"превосходная",  hint:"It's ______ option we have.", ac:["the cheapest","cheapest"]},
+{s:2,t:"cmp",l:8, q:"good",  f:"превосходная",  hint:"It's ______ café in the city.", ac:["the best","best"]},
+{s:2,t:"cmp",l:22,q:"reliable", f:"превосходная", hint:"She is ______ person in our team.", ac:["the most reliable","most reliable"]},
+{s:2,t:"cmp",l:8, q:"bad",   f:"превосходная",  hint:"That was ______ service I've ever had.", ac:["the worst","worst"]},
+
+/* ---- D. ВСТАВЬ СЛОВО (15) ---- */
+{s:3,t:"mc",l:20,q:"How ______ money do you need?", o:["much","many","a lot","more"], a:0},
+{s:3,t:"mc",l:20,q:"How ______ people are coming to the meeting?", o:["much","many","a lot of","more"], a:1},
+{s:3,t:"mc",l:7, q:"Could I have ______ water, please?", o:["any","some","many","a"], a:1},
+{s:3,t:"mc",l:7, q:"We don't have ______ free tables tonight.", o:["some","any","much of","a"], a:1},
+{s:3,t:"mc",l:1, q:"______ she work in a bank?", o:["Do","Does","Is","Are"], a:1},
+{s:3,t:"mc",l:5, q:"______ you go to the cinema yesterday?", o:["Did","Do","Were","Have"], a:0},
+{s:3,t:"mc",l:5, q:"They ______ very friendly when I met them.", o:["was","were","are","is"], a:1},
+{s:3,t:"mc",l:10,q:"I've decided — I ______ take the morning flight.", o:["will","am going to","go to","shall to"], a:1},
+{s:3,t:"mc",l:21,q:"You ______ smoke here. It's forbidden.", o:["don't have to","mustn't","needn't","shouldn't to"], a:1},
+{s:3,t:"mc",l:11,q:"I have worked here ______ three years.", o:["since","for","from","during"], a:1},
+{s:3,t:"mc",l:24,q:"I haven't answered his email ______.", o:["already","still","yet","now"], a:2},
+{s:3,t:"mc",l:23,q:"We are late ______ there was a lot of traffic.", o:["so","because","but","although"], a:1},
+{s:3,t:"mc",l:22,q:"She speaks English very ______.", o:["good","well","nice","fluent"], a:1},
+{s:3,t:"mc",l:4, q:"______ a pharmacy in this terminal?", o:["Is there","Are there","There is","Has there"], a:0},
+{s:3,t:"mc",l:17,q:"______ you lend me your charger, please?", o:["May","Could","Should","Must"], a:1},
+
+/* ---- E. НАЙДИ ОШИБКУ (8) ---- */
+{s:4,t:"err",l:1, w:["She","don't","like","coffee","."], a:1, fix:"doesn't"},
+{s:4,t:"err",l:8, w:["He","is","more","older","than","me","."], a:2, fix:"убрать more → He is older than me"},
+{s:4,t:"err",l:5, w:["I","didn't","went","to","the","party","."], a:2, fix:"go"},
+{s:4,t:"err",l:4, w:["There","is","two","cafés","near","my","house","."], a:1, fix:"are"},
+{s:4,t:"err",l:19,w:["If","it","will","rain",",","we","will","stay","home","."], a:2, fix:"rains"},
+{s:4,t:"err",l:24,w:["I","haven't","finished","already","."], a:3, fix:"yet"},
+{s:4,t:"err",l:21,w:["You","must","to","show","your","passport","."], a:2, fix:"убрать to → You must show"},
+{s:4,t:"err",l:9, w:["Could","you","tell","me","where","is","the","station","?"], a:5, fix:"…where the station is?"},
+
+/* ---- F. ПРЕДЛОГИ (5) ---- */
+{s:5,t:"mc",l:2, q:"My shift starts ______ seven o'clock.", o:["in","on","at","to"], a:2},
+{s:5,t:"mc",l:2, q:"I don't work ______ Sundays.", o:["in","on","at","by"], a:1},
+{s:5,t:"mc",l:9, q:"I usually go to work ______ foot.", o:["by","on","with","in"], a:1},
+{s:5,t:"mc",l:9, q:"We will go there ______ bus — it's cheaper.", o:["on","by","with","in"], a:1},
+{s:5,t:"mc",l:9, q:"The shop is ______ the corner, next to the bank.", o:["in","at","on","over"], a:2}
+];
+
+/* ===================== РЕНДЕР ===================== */
+const KEY="eph_quiz70_v1";
+let A={};
+try{A=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){A={}}
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const norm=s=>String(s||"").toLowerCase().trim().replace(/[.,!?;:"']/g,"").replace(/\s+/g," ").replace(/’/g,"'");
+const shuffle=a=>{const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+const sentence=w=>w.join(" ").replace(/\s+([.,?!])/g,"$1");
+
+const quiz=document.getElementById("quiz");
+let out="",last=-1;
+DATA.forEach((d,i)=>{
+  if(d.s!==last){last=d.s;
+    out+=`<div class="sec"><div class="tag">${SECS[d.s].n}</div><h2>${SECS[d.s].t}</h2><p>${SECS[d.s].d}</p></div>`;}
+  out+=`<div class="q" id="q${i}"><div class="qh"><div class="num">${i+1}</div><div class="qt">`;
+  if(d.t==="ord")      out+=`Собери предложение`;
+  else if(d.t==="vrb") out+=`<b>${d.inf}</b> → ${d.f}`;
+  else if(d.t==="cmp") out+=`<b>${d.q}</b> → ${d.f} форма`;
+  else if(d.t==="err") out+=`Найди ошибку и нажми на слово`;
+  else                 out+=esc(d.q);
+  out+=`</div></div>`;
+
+  if(d.t==="ord"){
+    out+=`<div class="line" id="ln${i}"></div><div class="bank" id="bk${i}"></div>`;
+  }else if(d.t==="vrb"){
+    out+=`<div class="row"><div class="ru">${d.ru}</div>
+      <input type="text" id="in${i}" data-i="${i}" placeholder="форма глагола" autocomplete="off" autocapitalize="off" spellcheck="false"></div>`;
+  }else if(d.t==="cmp"){
+    out+=`<div class="hint" style="margin-left:0">${esc(d.hint)}</div>
+      <input type="text" id="in${i}" data-i="${i}" placeholder="напиши форму" autocomplete="off" autocapitalize="off" spellcheck="false">`;
+  }else if(d.t==="err"){
+    out+=`<div class="sent" id="st${i}"></div>`;
+  }else{
+    out+=`<div class="opts">`;
+    d.o.forEach((o,k)=>{out+=`<label class="opt" id="o${i}_${k}"><input type="radio" name="q${i}" value="${k}" data-i="${i}">${esc(o)}</label>`});
+    out+=`</div>`;
+  }
+  out+=`<div class="fb" id="f${i}"></div></div>`;
+});
+quiz.innerHTML=out;
+
+/* --- наполнение интерактивных блоков --- */
+function drawOrder(i){
+  const d=DATA[i];
+  const picked=Array.isArray(A[i])?A[i].slice():[];
+  const pool=d.w.slice();
+  picked.forEach(t=>{const k=pool.indexOf(t); if(k>-1)pool.splice(k,1)});
+  const ln=document.getElementById("ln"+i), bk=document.getElementById("bk"+i);
+  ln.className="line"+(picked.length?" filled":"");
+  ln.innerHTML = picked.length
+    ? picked.map((t,k)=>`<span class="w inline" data-i="${i}" data-k="${k}" data-act="rm">${esc(t)}</span>`).join("")
+    : `<span class="ph">Нажимай на слова ниже…</span>`;
+  if(!bk.dataset.shuffled){ bk.dataset.order=JSON.stringify(shuffle(pool)); bk.dataset.shuffled="1"; }
+  let order=[]; try{order=JSON.parse(bk.dataset.order||"[]")}catch(e){order=pool}
+  const left=pool.slice();
+  const show=[];
+  order.forEach(t=>{const k=left.indexOf(t); if(k>-1){left.splice(k,1); show.push(t);}});
+  left.forEach(t=>show.push(t));
+  bk.innerHTML=show.map(t=>`<span class="w" data-i="${i}" data-t="${esc(t)}" data-act="add">${esc(t)}</span>`).join("");
+}
+function drawErr(i){
+  const d=DATA[i];
+  document.getElementById("st"+i).innerHTML=d.w.map((t,k)=>
+    `<span class="sw${A[i]===k?" pick":""}" data-i="${i}" data-k="${k}" data-act="pick">${esc(t)}</span>`).join("");
+}
+DATA.forEach((d,i)=>{
+  if(d.t==="ord")drawOrder(i);
+  else if(d.t==="err")drawErr(i);
+  else if(d.t==="vrb"||d.t==="cmp"){ if(A[i])document.getElementById("in"+i).value=A[i]; }
+  else if(A[i]!==undefined&&A[i]!==null){
+    const el=document.getElementById(`o${i}_${A[i]}`);
+    if(el){el.classList.add("sel");el.querySelector("input").checked=true;}
+  }
+});
+
+/* --- события --- */
+function save(){try{localStorage.setItem(KEY,JSON.stringify(A))}catch(e){}}
+function done(i){
+  const d=DATA[i];
+  if(d.t==="ord")return Array.isArray(A[i])&&A[i].length===d.w.length;
+  if(d.t==="vrb"||d.t==="cmp")return String(A[i]||"").trim()!=="";
+  return A[i]!==undefined&&A[i]!==null;
+}
+function progress(){
+  const n=DATA.filter((_,i)=>done(i)).length;
+  document.getElementById("pbar").style.width=(n/DATA.length*100)+"%";
+  document.getElementById("pcnt").textContent=n+" / "+DATA.length;
+}
+quiz.addEventListener("click",e=>{
+  const el=e.target.closest("[data-act]");
+  if(!el)return;
+  const i=+el.dataset.i, act=el.dataset.act;
+  if(act==="add"){ A[i]=(A[i]||[]).concat([el.dataset.t]); drawOrder(i); }
+  else if(act==="rm"){ const a=(A[i]||[]).slice(); a.splice(+el.dataset.k,1); A[i]=a; drawOrder(i); }
+  else if(act==="pick"){ A[i]=+el.dataset.k; drawErr(i); }
+  save(); progress();
+});
+quiz.addEventListener("change",e=>{
+  if(e.target.type==="radio"){
+    const i=+e.target.dataset.i; A[i]=+e.target.value;
+    DATA[i].o.forEach((_,k)=>document.getElementById(`o${i}_${k}`).classList.toggle("sel",k===A[i]));
+    save(); progress();
+  }
+});
+quiz.addEventListener("input",e=>{
+  if(e.target.type==="text"){ A[+e.target.dataset.i]=e.target.value; save(); progress(); }
+});
+
+/* ===================== ПРОВЕРКА ===================== */
+function check(){
+  let right=0; const bySec=SECS.map(()=>({r:0,t:0})); const wrong=[];
+  DATA.forEach((d,i)=>{
+    bySec[d.s].t++;
+    const card=document.getElementById("q"+i), fb=document.getElementById("f"+i);
+    let ok=false, given="—", correct="";
+    if(d.t==="ord"){
+      const picked=Array.isArray(A[i])?A[i]:[];
+      given=picked.length?sentence(picked):"—";
+      correct=sentence(d.w);
+      ok=norm(given)===norm(correct);
+      const ln=document.getElementById("ln"+i);
+      ln.style.borderColor=ok?"var(--ok)":"var(--bad)"; ln.style.borderStyle="solid";
+    }else if(d.t==="vrb"||d.t==="cmp"){
+      given=String(A[i]||"").trim()||"—";
+      correct=d.ac[0];
+      ok=d.ac.some(x=>norm(x)===norm(A[i]));
+      document.getElementById("in"+i).style.borderColor=ok?"var(--ok)":"var(--bad)";
+    }else if(d.t==="err"){
+      correct=`«${d.w[d.a]}» → ${d.fix}`;
+      given=(A[i]!==undefined&&A[i]!==null)?`«${d.w[A[i]]}»`:"—";
+      ok=A[i]===d.a;
+      const st=document.getElementById("st"+i);
+      [...st.children].forEach((sp,k)=>{
+        sp.classList.remove("pick");
+        if(k===d.a)sp.style.cssText="background:var(--ok-bg);color:var(--ok);border-color:var(--ok)";
+        else if(A[i]===k)sp.style.cssText="background:var(--bad-bg);color:var(--bad);border-color:var(--bad)";
+      });
+    }else{
+      correct=d.o[d.a];
+      if(A[i]!==undefined&&A[i]!==null)given=d.o[A[i]];
+      ok=A[i]===d.a;
+      d.o.forEach((_,k)=>{
+        const el=document.getElementById(`o${i}_${k}`);
+        el.classList.remove("right","wrong");
+        if(k===d.a)el.classList.add("right"); else if(A[i]===k)el.classList.add("wrong");
+      });
+    }
+    card.classList.remove("err","good");
+    card.classList.add(ok?"good":"err");
+    fb.className="fb show "+(ok?"r":"w");
+    fb.innerHTML=ok?"✓ Верно":`✗ Неверно. Правильно: <b>${esc(correct)}</b>`;
+    if(ok){right++;bySec[d.s].r++;}
+    else wrong.push({n:i+1,given,correct,l:d.l,s:d.s,
+      q:d.t==="ord"?"Собрать предложение":(d.t==="vrb"?`${d.inf} → ${d.f}`:(d.t==="cmp"?`${d.q} → ${d.f}`:(d.t==="err"?sentence(d.w):d.q)))});
+  });
+
+  const total=DATA.length, pct=Math.round(right/total*100);
+  const bands=[[90,"Отлично","Формы и порядок слов на автомате. Можно усложнять задачи."],
+    [75,"Хорошо","База крепкая. Разбери ошибки — и будет чисто."],
+    [60,"Нормально","Понимание есть, точности не хватает. Повтори разделы с худшим результатом."],
+    [40,"Нужна тренировка","Вернись к урокам из списка ошибок и прогони этот квиз ещё раз через три дня."],
+    [0,"Начнём сначала","Повтори базовые темы: порядок слов в вопросе и вторые формы глаголов."]];
+  const band=bands.find(b=>pct>=b[0]);
+
+  let r=`<div class="score">${right}<span> / ${total}</span></div>
+    <div class="band">${band[1]} · ${pct}%</div><p class="bandtxt">${band[2]}</p><div class="bd">`;
+  bySec.forEach((b,i)=>{
+    const p=Math.round(b.r/b.t*100);
+    r+=`<div class="bdr"><div class="nm">${SECS[i].n}</div>
+      <div class="mini"><i style="width:${p}%"></i></div><div class="vl">${b.r} / ${b.t}</div></div>`;
+  });
+  r+=`</div>`;
+
+  if(wrong.length){
+    const byL={}; wrong.forEach(w=>byL[w.l]=(byL[w.l]||0)+1);
+    const top=Object.entries(byL).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([l,c])=>`урок ${l} (${c})`).join(" · ");
+    r+=`<div class="mistakes"><h3>Ошибки — ${wrong.length} шт.</h3>`;
+    if(top)r+=`<div class="mi"><div class="mq">Чаще всего ошибки в темах: <b>${top}</b>. С них и начни повторение.</div></div>`;
+    wrong.forEach(w=>{
+      r+=`<div class="mi"><div class="mq">${w.n}. ${esc(w.q)}</div>
+        <div class="ma">Твой ответ: ${esc(w.given)}</div>
+        <div class="mc">Правильно: ${esc(w.correct)}</div>
+        <div class="ml">${SECS[w.s].n} · урок ${w.l}</div></div>`;
+    });
+    r+=`</div>`;
+  }else{
+    r+=`<div class="mistakes"><h3>Ошибок нет</h3><div class="mi">${total} из ${total}. Покажи этот экран преподавателю.</div></div>`;
+  }
+  const res=document.getElementById("res");
+  res.innerHTML=r; res.classList.add("show");
+  res.scrollIntoView({behavior:"smooth",block:"start"});
+}
+document.getElementById("check").addEventListener("click",check);
+document.getElementById("reset").addEventListener("click",()=>{
+  if(!confirm("Очистить все ответы и начать заново?"))return;
+  A={};save();location.reload();
+});
+
+const tb=document.getElementById("theme");
+tb.addEventListener("click",()=>{
+  const cur=document.documentElement.getAttribute("data-theme");
+  const next=cur==="dark"?"light":"dark";
+  document.documentElement.setAttribute("data-theme",next);
+  try{localStorage.setItem("eph_theme",next)}catch(e){}
+});
+try{const th=localStorage.getItem("eph_theme");if(th)document.documentElement.setAttribute("data-theme",th)}catch(e){}
+progress();
+</script>
+</body>
+</html>
